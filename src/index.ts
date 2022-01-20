@@ -1,6 +1,9 @@
 import express, { Request, Response, NextFunction } from 'express';
+import usersRoute from './routes/users.route';
 
 const app = express();
+
+app.use(usersRoute);
 
 /* Configurando rotas */
 app.get('/stats', (req: Request, res: Response, next:NextFunction) => {
