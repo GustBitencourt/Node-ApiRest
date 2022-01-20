@@ -1,24 +1,50 @@
 import { Router, Request, Response, NextFunction } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
 const usersRoute = Router();
 
-//userRoute receber um get executara:
-
-//rota users
+//userRoute receber um GET executara:
+//rota que busca todos os usuarios
 usersRoute.get('/users', (req: Request, res: Response, next:NextFunction) => {
     const users = [{ userName: 'Gustavo' }];
     //mandando a resposta
-    res.status(200).json(users)
+    res.status(StatusCodes.OK).json(users)
 })
 
-//rota pelo id de users
+//rota busca usuario especifico
 usersRoute.get('/users/:uuid', (req: Request<{ uuid: string}>, res: Response, next:NextFunction) => {
+    //responsavel por guardar o id que será usado para acessar o user
+    const uuid = req.params.uuid;    
+
+    res.status(StatusCodes.OK).send({ uuid });
+})
+
+
+//userRoute receber um POST executara:
+//cria usuario
+usersRoute.post('/users', (req: Request, res: Response, next:NextFunction) => {
+    const newUser = req.body;
+
+    res.status(StatusCodes.CREATED).send(newUser);
+})
+
+//userRoute receber um PUT executara:
+//atualiza usuario especifico
+usersRoute.put('/users/:uuid', (req: Request<{ uuid: string}>, res: Response, next:NextFunction) => {
     //responsavel por guardar o id que será usado para acessar o user
     const uuid = req.params.uuid;
 
-    
+    //pegando o usuario id para devolver como resposta
+    const modifiedUser = req.body;    
 
-    res.status(200).send({ uuid });
+    res.status(StatusCodes.OK).send(modifiedUser);    
 })
+
+//userRoute receber um DELETE executara:
+//excluir usuario especifico
+usersRoute.delete('/users/:uuid', (req: Request<{ uuid: string}>, res: Response, next:NextFunction) => {
+    res.sendStatus(StatusCodes.OK);
+})
+
 
 export default usersRoute;
