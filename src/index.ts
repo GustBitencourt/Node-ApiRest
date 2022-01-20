@@ -5,7 +5,7 @@ const app = express();
 /* Configurando rotas */
 app.get('/stats', (req: Request, res: Response, next:NextFunction) => {
     /* Status 200 manda o JSOn */
-    res.status(200).send({foo: 'bar'});
+    res.status(200).send({foo: 'Ta ouvindo?'});
 });
 
 
