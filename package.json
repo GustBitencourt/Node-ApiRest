@@ -1,0 +1,17 @@
+{
+  "name": "dionoderest",
+  "version": "1.0.0",
+  "description": "Microsservico de autenticacao em arquitetura rest",
+  "main": "/dist/index.ts",
+  "scripts": {
+    "build": "tsc -p .",
+    "start": "node ./",
+    "test": "echo \"Error: no test specified\" && exit 1"    
+  },
+  "author": "Gustavo Bitencourt",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^17.0.10",
+    "typescript": "^4.5.4"
+  }
+}
