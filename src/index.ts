@@ -1,6 +1,7 @@
 import express from 'express';
 import statusRoute from './routes/status.route';
 import usersRoute from './routes/users.route';
+import errorHandler from './middlewares/error-handler.middleware'
 
 const app = express();
 
@@ -12,6 +13,9 @@ app.use(express.urlencoded({ extended: true }));
 /* Configurando rotas */
 app.use(usersRoute);
 app.use(statusRoute);
+
+//Registrando erro handler
+app.use(errorHandler);
 
 //iniciando servidor
 app.listen(3000, () => {

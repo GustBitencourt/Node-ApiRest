@@ -1,3 +1,4 @@
+import DatabaseError from './../models/errors/databaseError.model';
 import db from "../db";
 import User from "../models/user.model";
 
@@ -16,21 +17,26 @@ class UserRepository {
     }
 
     async findById(uuid: string): Promise<User> {
-        /* $1 é o uuid, de maneira que não permita sql injection */
-        const query = `
-            SELECT uuid, username
-            FROM application_users 
-            WHERE uuid = $1
-        `;
+        try {
+            /* $1 é o uuid, de maneira que não permita sql injection */
+            const query = `
+                SELECT uuid, username
+                FROM application_users 
+                WHERE uuid = $1
+            `;
+    
+            /* guardando uuid */
+            const values = [uuid];
+            const { rows } = await db.query<User>(query, values);
+    
+            /* desestruturando array */
+            const [ user ] = rows;
+    
+            return user;
 
-        /* guardando uuid */
-        const values = [uuid];
-        const { rows } = await db.query<User>(query, values);
-
-        /* desestruturando array */
-        const [ user ] = rows;
-
-        return user;
+        } catch(error) {
+            throw new DatabaseError('Erro na consulta por ID', error);
+        }
     }
 
     async create(user: User): Promise<string> {
