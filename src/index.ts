@@ -1,7 +1,8 @@
 import express from 'express';
+import errorHandler from './middlewares/error-handler.middleware';
+import authorizationRoute from './routes/authorization.route';
 import statusRoute from './routes/status.route';
 import usersRoute from './routes/users.route';
-import errorHandler from './middlewares/error-handler.middleware'
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 /* Configurando rotas */
 app.use(usersRoute);
 app.use(statusRoute);
+app.use(authorizationRoute);
 
 //Registrando erro handler
 app.use(errorHandler);
