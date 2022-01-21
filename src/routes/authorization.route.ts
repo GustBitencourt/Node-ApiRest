@@ -11,11 +11,26 @@ authorizationRoute.post('/token', (req: Request, res: Response, next:NextFunctio
             throw new ForbiddenError('Credenciais não informadas');
         }
 
+        //separando dados recebidos
         const [authenticationType, token] = authorizationHeader.split(' ');
 
+        //validando token
         if (authenticationType !== 'Basic' || token) {
             throw new ForbiddenError('Tipo de autenticação inválido');
         }
+        //decodificando o token
+        const tokenContent = Buffer.from(token, 'base64').toString('utf-8')
+
+        //extraindo usuario e senha
+        const [username, password] = tokenContent.split(':');
+
+        if(!username || !password) {
+            throw new ForbiddenError('Credenciais não preenchidas');
+        }
+
+        
+
+
         
     } catch (error) {
         next(error);        
