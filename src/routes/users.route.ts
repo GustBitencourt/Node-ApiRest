@@ -26,22 +26,25 @@ usersRoute.get('/users/:uuid', async (req: Request<{ uuid: string}>, res: Respon
 
 //userRoute receber um POST executara:
 //cria usuario
-usersRoute.post('/users', (req: Request, res: Response, next:NextFunction) => {
+usersRoute.post('/users', async (req: Request, res: Response, next:NextFunction) => {
     const newUser = req.body;
-
-    res.status(StatusCodes.CREATED).send(newUser);
+    const uuid = await userRepository.create(newUser);
+    res.status(StatusCodes.CREATED).send(uuid);
 })
 
 //userRoute receber um PUT executara:
 //atualiza usuario especifico
-usersRoute.put('/users/:uuid', (req: Request<{ uuid: string}>, res: Response, next:NextFunction) => {
+usersRoute.put('/users/:uuid', async (req: Request<{ uuid: string}>, res: Response, next:NextFunction) => {
     //responsavel por guardar o id que será usado para acessar o user
     const uuid = req.params.uuid;
 
     //pegando o usuario id para devolver como resposta
-    const modifiedUser = req.body;    
+    const modifiedUser = req.body;
+    modifiedUser.uuid = uuid;
 
-    res.status(StatusCodes.OK).send(modifiedUser);    
+    await userRepository.update(modifiedUser)
+
+    res.status(StatusCodes.OK).send();    
 })
 
 //userRoute receber um DELETE executara:
