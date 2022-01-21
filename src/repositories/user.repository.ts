@@ -10,12 +10,27 @@ class UserRepository {
             FROM application_users 
         `;
 
-        /* executando query com promisse */
-        const result = await db.query<User>(query);
-
-        /* pega a coluna username de result  */
-        const rows = result.rows;
+        /* executando query com promisse e pegando resultado com desestruturação*/
+        const { rows } = await db.query<User>(query);
         return rows || [];
+    }
+
+    async findById(uuid: string): Promise<User> {
+        /* $1 é o uuid, de maneira que não permita sql injection */
+        const query = `
+            SELECT uuid, username
+            FROM application_users 
+            WHERE uuid = $1
+        `;
+
+        /* guardando uuid */
+        const values = [uuid];
+        const { rows } = await db.query<User>(query, values);
+
+        /* desestruturando array */
+        const [ user ] = rows;
+
+        return user;
     }
 
 }

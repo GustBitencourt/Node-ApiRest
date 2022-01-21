@@ -7,17 +7,20 @@ const usersRoute = Router();
 //userRoute receber um GET executara:
 //rota que busca todos os usuarios
 usersRoute.get('/users', async (req: Request, res: Response, next:NextFunction) => {
+    //pegando do banco
     const users = await userRepository.findAllUsers();
     //mandando a resposta
     res.status(StatusCodes.OK).json(users)
 })
 
 //rota busca usuario especifico
-usersRoute.get('/users/:uuid', (req: Request<{ uuid: string}>, res: Response, next:NextFunction) => {
+usersRoute.get('/users/:uuid', async (req: Request<{ uuid: string}>, res: Response, next:NextFunction) => {
     //responsavel por guardar o id que será usado para acessar o user
-    const uuid = req.params.uuid;    
+    const uuid = req.params.uuid;
+    //pegando do banco
+    const user = await userRepository.findById(uuid);    
 
-    res.status(StatusCodes.OK).send({ uuid });
+    res.status(StatusCodes.OK).send(user);
 })
 
 
