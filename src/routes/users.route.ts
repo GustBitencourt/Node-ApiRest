@@ -49,7 +49,9 @@ usersRoute.put('/users/:uuid', async (req: Request<{ uuid: string}>, res: Respon
 
 //userRoute receber um DELETE executara:
 //excluir usuario especifico
-usersRoute.delete('/users/:uuid', (req: Request<{ uuid: string}>, res: Response, next:NextFunction) => {
+usersRoute.delete('/users/:uuid', async (req: Request<{ uuid: string}>, res: Response, next:NextFunction) => {
+    const uuid = req.params.uuid;
+    await userRepository.removeUser(uuid)
     res.sendStatus(StatusCodes.OK);
 })
 
