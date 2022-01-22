@@ -37,6 +37,7 @@ async function basicAuthenticationMiddleware (req: Request, res: Response, next:
 
         //transferindo acesso dos dados de user após criar sua interface em types
         req.user = user;
+        next(); //encaminha o user
         
     } catch (error) {
         next(error);
