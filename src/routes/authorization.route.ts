@@ -1,3 +1,4 @@
+import { StatusCodes } from 'http-status-codes';
 import { Router, Request, Response, NextFunction} from 'express';
 import ForbiddenError from '../models/errors/forbiddenError.model';
 import userRepository from '../repositories/user.repository';
@@ -40,6 +41,19 @@ authorizationRoute.post('/token', async (req: Request, res: Response, next:NextF
         //'nbf' define data para qual o token não pode ser aceito antes dela
         //'iat' data de criação do token 
         //'jti' o id do token
+
+        if(!user) {
+            throw new ForbiddenError('Usuário ou senha inválidos!');
+        }
+
+        //variaveis JWT
+        const jwtPayload = { username: user.username };
+        const jwtOptions = { subject: user?.uuid };
+        const secretKey = 'my_secret_key';
+
+        //criação JWT
+        const jwt = JWT.sign(jwtPayload, secretKey, jwtOptions);
+        res.status(StatusCodes.OK).json({ token: jwt });
 
         
     } catch (error) {
