@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Router, Request, Response, NextFunction} from 'express';
 import ForbiddenError from '../models/errors/forbiddenError.model';
 import userRepository from '../repositories/user.repository';
-import JWT from 'jsonwebtoken';
+import JWT, { SignOptions } from 'jsonwebtoken';
 import basicAuthenticationMiddleware from '../middlewares/basic-authentication.middleware';
 import jwtAuthenticationMiddleware from '../middlewares/jwt-authentication.middleware';
 
@@ -27,7 +27,7 @@ authorizationRoute.post('/token', basicAuthenticationMiddleware , async (req: Re
 
         //variaveis JWT
         const jwtPayload = { username: user.username };
-        const jwtOptions = { subject: user?.uuid };
+        const jwtOptions: SignOptions = { subject: user?.uuid, expiresIn: '20m' };
         const secretKey = 'my_secret_key';
 
         //criação JWT
