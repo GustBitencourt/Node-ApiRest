@@ -28,7 +28,11 @@ async function bearerAuthenticationMiddleware(req: Request, res: Response, next:
         
         //pegando uuid no token
         const uuid = tokenPayLoad.sub;
-        const user = await userRepository.findById(uuid);
+        
+        const user = {
+            uuid: tokenPayLoad.sub,
+            username: tokenPayLoad.username
+        }
 
         req.user = user;
         next();
